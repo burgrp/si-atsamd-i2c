@@ -1,6 +1,6 @@
 {
   "name": "@si14/si-atsamd-i2c",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "I2C master and slave driver for ATSAMD MCUs",
   "repository": {
     "type": "git",
