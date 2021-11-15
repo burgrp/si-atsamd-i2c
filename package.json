@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
-    "@si14/si-generic-timer": "^1.0.5"
+    "@si14/si-generic-timer": "^1.0.5",
+    "@si14/si-systick-timer": "^1.0.4"
   }
 }
