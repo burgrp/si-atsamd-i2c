@@ -1,21 +1,24 @@
 {
-    "name": "@si14/si-atsamd-i2c",
-    "version": "1.0.1",
-    "description": "I2C master and slave driver for ATSAMD MCUs",
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/burgrp/si-atsamd-i2c.git"
-    },
-    "author": "Pavel Burgr",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/burgrp/si-atsamd-i2c/issues"
-    },
-    "homepage": "https://github.com/burgrp/si-atsamd-i2c#readme",
-    "silicon": {
-      "sources": [
-        "master.cpp",
-        "slave.cpp"
-      ]
-    }
+  "name": "@si14/si-atsamd-i2c",
+  "version": "1.0.1",
+  "description": "I2C master and slave driver for ATSAMD MCUs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burgrp/si-atsamd-i2c.git"
+  },
+  "author": "Pavel Burgr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/burgrp/si-atsamd-i2c/issues"
+  },
+  "homepage": "https://github.com/burgrp/si-atsamd-i2c#readme",
+  "silicon": {
+    "sources": [
+      "master.cpp",
+      "slave.cpp"
+    ]
+  },
+  "dependencies": {
+    "@si14/si-generic-timer": "^1.0.5"
   }
+}
