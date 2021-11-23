@@ -45,6 +45,10 @@ public:
   const int CMD_ACK_AND_READ = 2;
   const int CMD_ACK_AND_STOP = 3;
 
+  void acknowledge(int command, bool ackFlag) {
+    sercom->I2CM.CTRLB.setACKACT(!ackFlag).setCMD(command);
+  }
+
   void interruptHandlerSERCOM() {
 
     if (sercom->I2CM.INTFLAG.getMB() || sercom->I2CM.INTFLAG.getSB()) {
@@ -62,7 +66,7 @@ public:
           txComplete(txLength && txLength - 1);
         }
 
-        sercom->I2CM.CTRLB.setCMD(CMD_ACK_AND_STOP);
+        acknowledge(CMD_ACK_AND_STOP, false);
 
       } else {
         if (read) {
@@ -70,10 +74,10 @@ public:
           // read
           if (rxLength < rxLimit) {
             rxBufferPtr[rxLength++] = sercom->I2CM.DATA;
-            sercom->I2CM.CTRLB.setCMD(CMD_ACK_AND_READ);
+            acknowledge(CMD_ACK_AND_READ, true);
           } else {
             rxComplete(rxLength);
-            sercom->I2CM.CTRLB.setCMD(CMD_ACK_AND_STOP);
+            acknowledge(CMD_ACK_AND_STOP, false);
           }
 
         } else {
@@ -83,7 +87,7 @@ public:
             sercom->I2CM.DATA = txBufferPtr[txLength++];
           } else {
             txComplete(txLength);
-            sercom->I2CM.CTRLB.setCMD(CMD_ACK_AND_STOP);
+            acknowledge(CMD_ACK_AND_STOP, true);
           }
         }
       }
