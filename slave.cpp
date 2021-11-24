@@ -91,21 +91,7 @@ public:
       if (status.getDIR()) {
 
         // master read
-        int byte = getTxByte(txLength++);
-        if (byte != -1) {
-
-          sercom->I2CS.DATA = byte;
-
-          // release SDA after byte is sent to allow detect STOP condition
-          int wait = genericTimer::clkHz >> 17;
-          for (volatile int c = 0; c < wait; c++)
-            ;
-          target::PORT.PINCFG[pinSDA].setPMUXEN(false);
-          target::PORT.PINCFG[pinSDA].setPMUXEN(true);
-
-        } else {
-          sercom->I2CS.DATA = 0xFF;
-        }
+        sercom->I2CS.DATA = getTxByte(txLength++);
 
       } else {
 
