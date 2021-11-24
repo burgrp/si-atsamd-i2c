@@ -74,6 +74,9 @@ public:
           // read
           if (rxLength < rxLimit) {
             rxBufferPtr[rxLength++] = sercom->I2CM.DATA;
+          }
+
+          if (rxLength < rxLimit) {            
             acknowledge(CMD_ACK_AND_READ, true);
           } else {
             rxComplete(rxLength);
