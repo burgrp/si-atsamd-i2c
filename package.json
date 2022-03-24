@@ -14,6 +14,7 @@
   "homepage": "https://github.com/burgrp/si-atsamd-i2c#readme",
   "silicon": {
     "sources": [
+      "common.cpp",
       "master.cpp",
       "slave.cpp"
     ]

@@ -1,6 +1,6 @@
 namespace atsamd::i2c {
 
-class Master {
+class Master: public Common {
   volatile target::sercom::Peripheral *sercom;
 
 public:
@@ -16,10 +16,15 @@ public:
   unsigned char *txBufferPtr;
   unsigned int txBufferSize;
 
-  void init(volatile target::sercom::Peripheral *sercom, int genHz, int sclHz, unsigned char *rxBufferPtr,
-            unsigned int rxBufferSize, unsigned char *txBufferPtr, unsigned int txBufferSize) {
+  void init(volatile target::sercom::Peripheral *sercom,
+            target::gclk::CLKCTRL::GEN clockGen, int pinSDA,
+            target::port::PMUX::PMUXE muxSDA, int pinSCL,
+            target::port::PMUX::PMUXE muxSCL,
+    int genHz, int sclHz,
+            unsigned char *rxBufferPtr, unsigned int rxBufferSize,
+            unsigned char *txBufferPtr, unsigned int txBufferSize) {
 
-    this->sercom = sercom;
+    Common::init(sercom, clockGen, pinSDA, muxSDA, pinSCL, muxSCL);
 
     this->rxBufferPtr = rxBufferPtr;
     this->rxBufferSize = rxBufferSize;
@@ -29,12 +34,14 @@ public:
     int baud = genHz / (2 * sclHz);
     sercom->I2CM.BAUD = sercom->I2CM.BAUD.bare().setBAUD(baud).setBAUDLOW(baud);
 
-    sercom->I2CM.INTENSET = sercom->I2CM.INTENSET.bare().setMB(true).setSB(true); //.setERROR(true)
+    sercom->I2CM.INTENSET =
+        sercom->I2CM.INTENSET.bare().setMB(true).setSB(true); //.setERROR(true)
 
-    sercom->I2CM.CTRLA = sercom->I2CM.CTRLA.bare()
-                             .setMODE(target::sercom::I2CM::CTRLA::MODE::I2C_MASTER)
-                             .setSCLSM(false)
-                             .setENABLE(true);
+    sercom->I2CM.CTRLA =
+        sercom->I2CM.CTRLA.bare()
+            .setMODE(target::sercom::I2CM::CTRLA::MODE::I2C_MASTER)
+            .setSCLSM(false)
+            .setENABLE(true);
 
     while (sercom->I2CM.SYNCBUSY)
       ;
@@ -76,7 +83,7 @@ public:
             rxBufferPtr[rxLength++] = sercom->I2CM.DATA;
           }
 
-          if (rxLength < rxLimit) {            
+          if (rxLength < rxLimit) {
             acknowledge(CMD_ACK_AND_READ, true);
           } else {
             rxComplete(rxLength);
